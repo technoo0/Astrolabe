@@ -13,7 +13,7 @@ import { Camera } from "expo-camera";
 
 var myControls = null;
 
-export default function HomeScreen({}) {
+export default function ARScreen({}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const myCamera = useRef(null);
