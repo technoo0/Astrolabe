@@ -1,15 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  SliderBase,
+} from "react-native";
 import ThreeDView from "../components/ThreeDView";
+import Slider from "react-native-slider";
 
 import { Camera } from "expo-camera";
 
 let myControls = null;
 
-export default function ARScreen({navigation}) {
+export default function ARScreen({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
-  const [slider,showSlider] = useState(false);
+  const [slider, showSlider] = useState(false);
   const myCamera = useRef(null);
   useEffect(() => {
     (async () => {
@@ -31,17 +39,42 @@ export default function ARScreen({navigation}) {
         <View style={styles.grid}>
           <ThreeDView />
         </View>
-        {
-        slider &&  
-        <View style={styles.timeStampContainer}>
-            <Text>Time Slider</Text>
-        </View>
-        }
+        {slider && (
+          <View style={styles.timeStampContainer}>
+            <View style={styles.timeContainer}>
+              <View style={{ marginRight: "73%" }}>
+                <Text style={{ color: "#F2EFEA" }}>-24</Text>
+              </View>
+              <View>
+                <Text style={{ color: "#F2EFEA" }}>+24</Text>
+              </View>
+            </View>
+            <Slider
+              value={0}
+              minimumValue={-24}
+              maximumValue={24}
+              minimumTrackTintColor="#F2EFEA"
+              trackStyle={styles.sliderTrack}
+              thumbStyle={styles.thumb}
+              style={styles.slider}
+              thumbTintColor="#1E1E24"
+            />
+          </View>
+        )}
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={() => {navigation.goBack()}} style={styles.backButton}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+            style={styles.backButton}
+          >
             <Image source={require("../../assets/back-arrow.png")} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {showSlider(!slider)}}>
+          <TouchableOpacity
+            onPress={() => {
+              showSlider(!slider);
+            }}
+          >
             <Image source={require("../../assets/time-icon.png")} />
           </TouchableOpacity>
         </View>
@@ -63,9 +96,23 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
   },
-  timeStampContainer:{
-    width:"100%",
-    height:50,
-    backgroundColor:'white'
-  }
+  timeContainer: {
+    flexDirection: "row",
+  },
+  timeStampContainer: {
+    marginBottom: "3%",
+    alignItems: "center",
+  },
+  slider: {
+    width: "90%",
+  },
+  sliderTrack: {
+    height: "100%",
+    borderRadius: 10,
+    backgroundColor: "#F2EFEA",
+  },
+  thumb: {
+    height: "90%",
+    width: "3%",
+  },
 });
