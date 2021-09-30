@@ -1,17 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  StyleSheet,
-  Button,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import ThreeDView from "../components/ThreeDView";
 
 import { Camera } from "expo-camera";
 
-var myControls = null;
+let myControls = null;
 
 export default function ARScreen({}) {
   const [hasPermission, setHasPermission] = useState(null);
@@ -34,8 +27,16 @@ export default function ARScreen({}) {
   return (
     <View style={styles.container}>
       <Camera ref={myCamera} style={styles.camera} type={type}>
-        <View style={styles.buttonContainer}>
+        <View style={styles.grid}>
           <ThreeDView />
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.backButton}>
+            <Image source={require("../../assets/back-arrow.png")} />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Image source={require("../../assets/time-icon.png")} />
+          </TouchableOpacity>
         </View>
       </Camera>
     </View>
@@ -45,9 +46,14 @@ export default function ARScreen({}) {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   camera: { flex: 1 },
-  buttonContainer: {
+  grid: {
     flex: 1,
     backgroundColor: "transparent",
     flexDirection: "row",
+  },
+  buttonContainer: {
+    marginBottom: "5%",
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
 });
