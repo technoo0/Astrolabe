@@ -1,28 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import * as Font from "expo-font";
-import AppLoading from "expo-app-loading";
 import Svg, { Path } from "react-native-svg";
 
-const fetchFonts = () => {
-  Font.loadAsync({
-    "ropa-sans": require("../../fonts/RopaSans-Regular.ttf"),
-  });
-};
-
-export default function Home({navigation}) {
-  const [dataLoaded, setDataLoaded] = useState(false);
-
-  if (!dataLoaded) {
-    return (
-      <AppLoading
-        startAsync={fetchFonts}
-        onFinish={() => setDataLoaded(true)}
-        onError={(err) => console.log(err)}
-      />
-    );
-  }
-
+export default function Home({ navigation }) {
   return (
     <View style={styles.screen}>
       <Svg
@@ -45,7 +25,12 @@ export default function Home({navigation}) {
         </Text>
       </View>
       <TouchableOpacity style={styles.button}>
-        <Text style={{ fontSize: 15 }} onPress={() => navigation.navigate('ARScreen')}>See What it Looks Like!</Text>
+        <Text
+          style={{ fontSize: 15, fontFamily: "ropa-sans" }}
+          onPress={() => navigation.navigate("ARScreen")}
+        >
+          See What it Looks Like!
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -72,6 +57,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 18,
     color: "white",
+    fontFamily: "ropa-sans",
   },
   button: {
     backgroundColor: "#F2EFEA",
