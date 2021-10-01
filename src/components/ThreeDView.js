@@ -85,9 +85,9 @@ export default function App() {
       let theta = obj['elevation'];
       let r = obj['rangeSat'];
       // changing from spherical coordinates to cartesian coordinates ( from angles to x y z)
-      let x = r*Math.cos(phi)*Math.sin(theta);
-      let y = r*Math.cos(theta)*Math.sin(phi);
-      let z = r*Math.cos(theta);
+      let x = r*Math.cos((phi*180)/Math.PI)*Math.sin((theta*180)/Math.PI);
+      let y = r*Math.cos((theta*180)/Math.PI)*Math.sin((phi*180)/Math.PI);
+      let z = r*Math.cos((theta*180)/Math.PI);
       //since grid size is 50 and average rangesat is 2000 therefore the ration is 1:40 thus I divided by 40 to display objects on the screen
       createCube(x/40,y/40,z/40);
     }
