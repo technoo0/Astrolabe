@@ -23,9 +23,9 @@ Astrolabe is an AR app for space debris created for the Nasa Space Apps hackatho
 ## for the first time
 
 ```
+git clone https://github.com/technoo0/Astrolabe.git
 git add .
 git commit -m "new commit"
-git remote add origin https://github.com/technoo0/Astrolabe.git
 git branch -M main
 git push -u origin main
 ```
