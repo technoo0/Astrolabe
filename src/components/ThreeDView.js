@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
-import jsonData from "./data";
+
+// import jsonData from "./data";
 // import  from "../data/ganrateData";
+
 import {
   PerspectiveCamera,
   Scene,
@@ -9,7 +11,7 @@ import {
   Mesh,
   SphereGeometry,
 } from "three";
-import { initTheLoc, getData } from "../data/newdataGen";
+import gettheData from "../data/finalData";
 import { GLView } from "expo-gl";
 import { Renderer } from "expo-three";
 import Conrols from "./Controls";
@@ -29,16 +31,25 @@ const GanrateCamDircation = (phi, theta) => {
 
 let myControls;
 let mydata = [];
+let myinv;
+var Calrunning = false;
 export default function App() {
   //init the sensors
   useEffect(() => {
     myControls = Conrols();
     myControls.start();
-    initTheLoc();
+
+    myinv = setInterval(function () {
+      gettheData().then(async (fulldata) => {
+        mydata = fulldata;
+      });
+    }, 3000);
 
     return () => {
       myControls.stop();
       myControls = null;
+      mydata = null;
+      clearInterval(myinv);
     };
   }, []);
 
@@ -49,7 +60,7 @@ export default function App() {
       75,
       gl.drawingBufferWidth / gl.drawingBufferHeight,
       0.01,
-      1000
+      100000
     );
     camera.position.y = 1;
     // 3. Renderer
@@ -73,11 +84,11 @@ export default function App() {
       MyShapes.push(cube2);
     }
 
-    const size = 50;
-    const divisions = 50;
+    // const size = 50;
+    // const divisions = 50;
 
-    const gridHelper = new THREE.GridHelper(size, divisions);
-    scene.add(gridHelper);
+    // const gridHelper = new THREE.GridHelper(size, divisions);
+    // scene.add(gridHelper);
 
     // camera.position.y = 2;
 
@@ -86,16 +97,14 @@ export default function App() {
       let phi = obj["elevation"];
       let theta = obj["azimuth"];
       let r = obj["rangeSat"];
-      if (theta > 180) {
-        theta = theta - 360;
+      if (theta > (180 * Math.PI) / 180) {
+        // theta = theta - 360;
         phi = -phi;
       }
       // changing from spherical coordinates to cartesian coordinates ( from angles to x y z)
-      let x =
-        r * Math.cos((phi * Math.PI) / 180) * Math.sin((theta * Math.PI) / 180);
-      let y =
-        r * Math.sin((theta * Math.PI) / 180) * Math.sin((phi * Math.PI) / 180);
-      let z = r * Math.cos((theta * Math.PI) / 180);
+      let x = r * Math.cos(phi) * Math.sin(theta);
+      let y = r * Math.sin(theta) * Math.sin(phi);
+      let z = r * Math.cos(theta);
       //since grid size is 50 and average rangesat is 2000 therefore the ration is 1:40 thus I divided by 40 to display objects on the screen
       createCube(x / 20, y / 20, z / 20);
     };
@@ -121,24 +130,9 @@ export default function App() {
     //   });
     // }, 100);
 
-    const render = async () => {
-      requestAnimationFrame(render);
+    let myjsonData = [];
 
-      MyShapes.map((i) => {
-        // const object = scene.getObjectByProperty("uuid", i);
-        // object.geometry.dispose();
-        // object.material.dispose();
-        scene.remove(i);
-      });
-
-      MyShapes = [];
-
-      const myjsonData = await getData();
-      for (let obj of myjsonData) {
-        convertandpaint(obj);
-      }
-
-      //if sensors are init
+    const renderLoop = () => {
       if (myControls) {
         //get rotation
         const { YR, ZR } = myControls.getData();
@@ -154,6 +148,35 @@ export default function App() {
 
       renderer.render(scene, camera);
       gl.endFrameEXP();
+    };
+
+    const CalLoop = () => {
+      // console.log(Calrunning);
+
+      Calrunning = true;
+
+      // console.log("finshed the running");
+      // console.log(fulldata.length);
+      myjsonData = mydata;
+
+      MyShapes.map((i) => {
+        scene.remove(i);
+      });
+
+      MyShapes = [];
+
+      for (let obj of myjsonData) {
+        convertandpaint(obj);
+      }
+      Calrunning = false;
+    };
+
+    const render = () => {
+      requestAnimationFrame(render);
+      renderLoop();
+      CalLoop();
+
+      //if sensors are init
     };
     render();
   };

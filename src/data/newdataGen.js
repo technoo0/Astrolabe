@@ -7,7 +7,7 @@ import {
   ecfToLookAngles,
 } from "satellite.js";
 import GetLocation from "./getlocation";
-import data from "./FULLDATATEL.json";
+import data from "./FULLDATATEL1.json";
 var observerGd;
 
 const initTheLoc = async () => {
