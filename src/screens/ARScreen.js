@@ -7,10 +7,13 @@ import {
   Image,
   SliderBase,
 } from "react-native";
+import * as Sharing from "expo-sharing";
 import ThreeDView from "../components/ThreeDView";
 import Slider from "react-native-slider";
-
+import useStore from "../../state";
 import { Camera } from "expo-camera";
+import { captureScreen } from "react-native-view-shot";
+import { Asset } from "expo-asset";
 
 let myControls = null;
 
@@ -19,6 +22,30 @@ export default function ARScreen({ navigation }) {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [slider, showSlider] = useState(false);
   const myCamera = useRef(null);
+  const handelSliderChange = (value) => {
+    useStore.setState({ time: Math.round(value) });
+  };
+  const takeScreenShot = () => {
+    // To capture Screenshot
+    captureScreen({
+      // Either png or jpg (or webm Android Only), Defaults: png
+      format: "jpg",
+      // Quality 0.0 - 1.0 (only available for jpg)
+      quality: 0.8,
+    }).then(
+      //callback function to get the result URL of the screnshot
+      async (uri) => {
+        console.log(uri);
+        if (!(await Sharing.isAvailableAsync())) {
+          alert(`Uh oh, sharing isn't available on your platform`);
+          return;
+        }
+
+        await Sharing.shareAsync(uri);
+      },
+      (error) => console.error("Oops, Something Went Wrong", error)
+    );
+  };
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
@@ -39,7 +66,7 @@ export default function ARScreen({ navigation }) {
         <View style={styles.grid}>
           <ThreeDView />
         </View>
-        {slider && (
+        {slider ? (
           <View style={styles.timeStampContainer}>
             <View style={styles.timeContainer}>
               <View style={{ marginRight: "73%" }}>
@@ -56,19 +83,22 @@ export default function ARScreen({ navigation }) {
               minimumTrackTintColor="#F2EFEA"
               trackStyle={styles.sliderTrack}
               thumbStyle={styles.thumb}
+              onValueChange={handelSliderChange}
               style={styles.slider}
               thumbTintColor="#1E1E24"
             />
           </View>
-        )}
+        ) : null}
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             onPress={() => {
               navigation.goBack();
             }}
-            style={styles.backButton}
           >
             <Image source={require("../../assets/back-arrow.png")} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={takeScreenShot}>
+            <Image source={require("../../assets/screenShot.png")} />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
@@ -95,6 +125,7 @@ const styles = StyleSheet.create({
     marginBottom: "5%",
     flexDirection: "row",
     justifyContent: "space-around",
+    alignItems: "center",
   },
   timeContainer: {
     flexDirection: "row",
