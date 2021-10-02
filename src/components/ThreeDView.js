@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-
+import React, { useEffect, useState } from "react";
+import * as Sharing from "expo-sharing";
 // import jsonData from "./data";
 // import  from "../data/ganrateData";
 
@@ -36,6 +36,19 @@ let myinv;
 let remove = false;
 var Calrunning = false;
 export default function App() {
+  const [myGl, setMyGl] = useState();
+  const TackPhotoHandler = async () => {
+    const photo = await GLView.takeSnapshotAsync(myGl);
+    console.log(photo);
+    if (!(await Sharing.isAvailableAsync())) {
+      alert(`Uh oh, sharing isn't available on your platform`);
+      return;
+    }
+
+    await Sharing.shareAsync(photo.localUri);
+  };
+  useStore.setState({ tackphoto: TackPhotoHandler });
+  //
   //init the sensors
   useEffect(() => {
     myControls = Conrols();
@@ -138,6 +151,7 @@ export default function App() {
     let myjsonData = [];
 
     const renderLoop = () => {
+      setMyGl(gl);
       if (myControls) {
         //get rotation
         const { YR, ZR } = myControls.getData();

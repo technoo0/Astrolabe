@@ -76,6 +76,15 @@ export default function ARScreen({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
+              const tackphoto = useStore.getState().tackphoto;
+              tackphoto();
+            }}
+            style={styles.backButton}
+          >
+            <Image source={require("../../assets/back-arrow.png")} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
               showSlider(!slider);
             }}
           >
