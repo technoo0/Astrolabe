@@ -4,7 +4,7 @@ import Location from "./getlocation";
 var observerGd = {
   longitude: degreesToRadians(-122.0308),
   latitude: degreesToRadians(36.9613422),
-  height: 0.37,
+  height: 0,
 };
 
 const getloc = async () => {
@@ -18,6 +18,7 @@ const getloc = async () => {
     latitude: degreesToRadians(latitude),
     height: 0,
   };
+  //   console.log({ latitude, longitude });
 };
 getloc();
 import {
@@ -28,15 +29,20 @@ import {
   ecfToLookAngles,
 } from "satellite.js";
 
-const PropgateData = () => {
+const PropgateData = (time) => {
   return new Promise(async (resolve, reject) => {
     // console.log("goooooooooooo");
     let fulldata = [];
-    var gmst = await gstime(new Date());
+    var gmst = await gstime(
+      new Date(new Date().getTime() + time * 60 * 60 * 1000)
+    );
     for (var i = 0, len = DATA.length; i < len; i++) {
       const { satrec, name, catalogNumber } = await DATA[i];
 
-      var positionAndVelocity = await propagate(satrec, new Date());
+      var positionAndVelocity = await propagate(
+        satrec,
+        new Date(new Date().getTime() + time * 60 * 60 * 1000)
+      );
       var positionEci = await positionAndVelocity.position;
 
       if (positionEci) {

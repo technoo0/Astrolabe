@@ -1,6 +1,7 @@
 import create from "zustand";
 
 const useStore = create((set) => ({
+  time: 0,
   Phonedegree: 0,
   PhoneCompass: 0,
   //   increasePopulation: () => set(state => ({ bears: state.bears + 1 })),

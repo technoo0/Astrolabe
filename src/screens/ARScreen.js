@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import ThreeDView from "../components/ThreeDView";
 import Slider from "react-native-slider";
-
+import useStore from "../../state";
 import { Camera } from "expo-camera";
 
 let myControls = null;
@@ -19,6 +19,9 @@ export default function ARScreen({ navigation }) {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [slider, showSlider] = useState(false);
   const myCamera = useRef(null);
+  const handelSliderChange = (value) => {
+    useStore.setState({ time: Math.round(value) });
+  };
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
@@ -39,7 +42,7 @@ export default function ARScreen({ navigation }) {
         <View style={styles.grid}>
           <ThreeDView />
         </View>
-        {slider && (
+        {slider ? (
           <View style={styles.timeStampContainer}>
             <View style={styles.timeContainer}>
               <View style={{ marginRight: "73%" }}>
@@ -56,11 +59,12 @@ export default function ARScreen({ navigation }) {
               minimumTrackTintColor="#F2EFEA"
               trackStyle={styles.sliderTrack}
               thumbStyle={styles.thumb}
+              onValueChange={handelSliderChange}
               style={styles.slider}
               thumbTintColor="#1E1E24"
             />
           </View>
-        )}
+        ) : null}
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             onPress={() => {

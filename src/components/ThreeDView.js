@@ -11,6 +11,7 @@ import {
   Mesh,
   SphereGeometry,
 } from "three";
+import useStore from "../../state";
 import gettheData from "../data/finalData";
 import { GLView } from "expo-gl";
 import { Renderer } from "expo-three";
@@ -32,15 +33,17 @@ const GanrateCamDircation = (phi, theta) => {
 let myControls;
 let mydata = [];
 let myinv;
+let remove = false;
 var Calrunning = false;
 export default function App() {
   //init the sensors
   useEffect(() => {
     myControls = Conrols();
     myControls.start();
-
+    remove = true;
     myinv = setInterval(function () {
-      gettheData().then(async (fulldata) => {
+      const time = useStore.getState().time;
+      gettheData(time).then(async (fulldata) => {
         mydata = fulldata;
       });
     }, 1000);
@@ -49,7 +52,9 @@ export default function App() {
       myControls.stop();
       myControls = null;
       mydata = null;
+      remove = true;
       clearInterval(myinv);
+      myinv = null;
     };
   }, []);
 

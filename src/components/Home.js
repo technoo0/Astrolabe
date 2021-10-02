@@ -24,7 +24,10 @@ export default function Home({ navigation }) {
           Earth Orbit is Full With Debris and Junk
         </Text>
       </View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("ARScreen")}
+        style={styles.button}
+      >
         <Text
           style={{ fontSize: 15, fontFamily: "ropa-sans" }}
           onPress={() => navigation.navigate("ARScreen")}
