@@ -42,15 +42,15 @@ const getData = () => {
   };
 
   object.GetData = async () => {
-    const { altitude, latitude, longitude } = await (
-      await object.LocationSensor.getData()
-    ).coords;
+    // const { altitude, latitude, longitude } = await (
+    //   await object.LocationSensor.getData()
+    // ).coords;
 
-    object.observerGd = {
-      longitude: degreesToRadians(longitude),
-      latitude: degreesToRadians(latitude),
-      height: altitude / 1000 || 0,
-    };
+    // object.observerGd = {
+    //   longitude: degreesToRadians(longitude),
+    //   latitude: degreesToRadians(latitude),
+    //   height: altitude / 1000 || 0,
+    // };
     let fulldata = [];
     for (i in object.SatRecs) {
       const { satrec, name, catalogNumber } = object.SatRecs[i];
