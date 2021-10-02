@@ -1,5 +1,25 @@
 import DATA from "./time6.json";
+import Location from "./getlocation";
 
+var observerGd = {
+  longitude: degreesToRadians(-122.0308),
+  latitude: degreesToRadians(36.9613422),
+  height: 0.37,
+};
+
+const getloc = async () => {
+  const myLoc = Location();
+  myLoc.init();
+  const { altitude, latitude, longitude } = await (
+    await myLoc.getData()
+  ).coords;
+  observerGd = {
+    longitude: degreesToRadians(longitude),
+    latitude: degreesToRadians(latitude),
+    height: 0,
+  };
+};
+getloc();
 import {
   propagate,
   degreesToRadians,
@@ -7,11 +27,6 @@ import {
   eciToEcf,
   ecfToLookAngles,
 } from "satellite.js";
-var observerGd = {
-  longitude: degreesToRadians(-122.0308),
-  latitude: degreesToRadians(36.9613422),
-  height: 0.37,
-};
 
 const PropgateData = () => {
   return new Promise(async (resolve, reject) => {

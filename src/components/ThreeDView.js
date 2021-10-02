@@ -43,7 +43,7 @@ export default function App() {
       gettheData().then(async (fulldata) => {
         mydata = fulldata;
       });
-    }, 3000);
+    }, 1000);
 
     return () => {
       myControls.stop();
@@ -106,7 +106,7 @@ export default function App() {
       let y = r * Math.sin(theta) * Math.sin(phi);
       let z = r * Math.cos(theta);
       //since grid size is 50 and average rangesat is 2000 therefore the ration is 1:40 thus I divided by 40 to display objects on the screen
-      createCube(x / 20, y / 20, z / 20);
+      createCube(x / 30, y / 30, z / 30);
     };
 
     // const MyDataGen = getData();
