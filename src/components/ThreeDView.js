@@ -78,9 +78,17 @@ export default function App() {
 
     //function for cube creation
     var MyShapes = [];
+    function getRandomColor() {
+      var letters = "0123456789ABCDEF";
+      var color = "#";
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
     function createCube(x, y, z) {
       const geometry2 = new SphereGeometry(1, 5, 5);
-      const material2 = new MeshBasicMaterial({ color: 0x00ff00 });
+      const material2 = new MeshBasicMaterial({ color: getRandomColor() });
       const cube2 = new Mesh(geometry2, material2);
       cube2.position.x = x;
       cube2.position.y = y;
@@ -95,7 +103,7 @@ export default function App() {
     // const gridHelper = new THREE.GridHelper(size, divisions);
     // scene.add(gridHelper);
 
-    // camera.position.y = 2;
+    camera.position.y = 2;
 
     // looping over json data note: json data was reduced for ease of testing but the code is scalable
     const convertandpaint = (obj) => {
@@ -111,29 +119,8 @@ export default function App() {
       let y = r * Math.sin(theta) * Math.sin(phi);
       let z = r * Math.cos(theta);
       //since grid size is 50 and average rangesat is 2000 therefore the ration is 1:40 thus I divided by 40 to display objects on the screen
-      createCube(x / 30, y / 30, z / 30);
+      createCube(x / 50, y / 50, z / 50);
     };
-
-    // const MyDataGen = getData();
-    // await MyDataGen.init();
-    // await MyDataGen.runData();
-
-    // for (i in scene.children) {
-    //   console.log(scene.children[i]);
-    // }
-    // let fobj = {
-    //   elevation: 0,
-    //   azimuth: 270,
-    //   rangeSat: 1000,
-    // };
-    // const SatLoop = async()=>{
-
-    // }
-    // setInterval(() => {
-    //   getData().then((data) => {
-    //     console.log("ok", data[1]);
-    //   });
-    // }, 100);
 
     let myjsonData = [];
 

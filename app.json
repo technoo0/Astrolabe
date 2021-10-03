@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Astrolabe",
-    "slug": "snack-cb1b48fa-7528-44bf-98a6-e3f079929f52",
+    "slug": "astrolabe",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/AppIcon.png",
@@ -28,6 +28,7 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": ""
   }
 }
