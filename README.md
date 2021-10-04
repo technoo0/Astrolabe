@@ -1,26 +1,50 @@
-# Astrolabe
+<div align="center">
 
-Astrolabe is an AR app for space debris created for the Nasa Space Apps hackathon
+![Astrolabe](https://images.spaceappschallenge.org/team-photos/4GeiJzMPzulwh7zRPxv4kNw1z08=/24414/fill-591x300/)
 
-## run for the first time
+</div>
+
+<div align="center">
+  <p>Astrolabe is an AR app for space debris created for the Nasa Space Apps hackathon</p>
+</div>
+
+<h1></h1>
+
+
+<div align="center">
+  
+[![Grou](https://user-images.githubusercontent.com/65347532/135782190-d243ec2d-3268-4f13-850e-1dd6bd4b676f.png)](https://astro-labe-solution-guide.netlify.app)
+  
+</div>
+<h1></h1>
+  
+
+
+
+
+
+
+
+
+### Run for the first time
 
 `npm install `
 
-## run for Qr code
+### Run form Qr code
 
 `npm start`
 
-## run for Android emulator
+### Run for Android emulator
 
 `npm run android`
 
-## run for web
+### Run for web
 
 `npm run web`
 
-# contribution
+# Contribution
 
-## for the first time
+### For the first time
 
 ```
 git clone https://github.com/technoo0/Astrolabe.git
@@ -30,7 +54,7 @@ git branch -M main
 git push -u origin main
 ```
 
-## normal push
+### Normal push
 
 ```
 git add .
